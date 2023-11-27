@@ -3,11 +3,17 @@ document.getElementById('opgg').addEventListener('click', () => {
     window.api.receive('invalid-port', (message) => {
         createToast(message);
     });
+    window.api.receive('no-players', (message) => {
+        createToast(message);
+    });
 });
   
 document.getElementById('porofessor').addEventListener('click', () => {
     window.api.send('porofessor');
     window.api.receive('invalid-port', (message) => {
+        createToast(message);
+    });
+    window.api.receive('no-players', (message) => {
         createToast(message);
     });
 });
@@ -74,6 +80,9 @@ document.getElementById('justnames').addEventListener('click', () => {
     });
 
     window.api.receive('invalid-port', (message) => {
+        createToast(message);
+    });
+    window.api.receive('no-players', (message) => {
         createToast(message);
     });
 });

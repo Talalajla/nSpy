@@ -35,6 +35,9 @@ ipcMain.on('opgg', async (event, arg) => {
 
   if (msg.message === 'done') {
     console.log('Done');
+  } else if (msg.message === 'No players found.') {
+    event.reply('no-players', msg.message);
+    return;
   } else {
     event.reply('invalid-port', msg.message);
     return;

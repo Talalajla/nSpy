@@ -198,6 +198,9 @@ async function startProgram(website) {
     //     ]
     // };
 
+    if (players.participants.length === 0) {
+        return { message: 'No players found' };
+    }
     const names = await getSummonerNames(players);
 
     if (website === 'justnames') {
