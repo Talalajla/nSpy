@@ -5,11 +5,8 @@ Client = {};
 Riot = {};
 players = {};
 
-
 async function makeRequest(type, url, client, lcuData) {
     try {
-        const https = require('https');
-    
         process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
     
         let port, token;
@@ -21,9 +18,6 @@ async function makeRequest(type, url, client, lcuData) {
             port = parseInt(lcuData.Riot.port);
             token = lcuData.Riot.token;
         }
-    
-        console.log("port: ", port);
-        console.log("token:", token);
     
         const options = {
             hostname: '127.0.0.1',
@@ -54,8 +48,7 @@ async function makeRequest(type, url, client, lcuData) {
     
             req.end();
         });
-    
-        console.log('response: ', response);
+
         return response;
     } catch (error) {
         console.error('Request error:', error);
@@ -74,9 +67,6 @@ async function getLCU() {
 
     Client["port"] = findString(commandline, "--app-port=", "\" \"--install");
     Client["token"] = Buffer.from("riot:" + findString(commandline, "--remoting-auth-token=", "\" \"--respawn-command=LeagueClient.exe")).toString('base64');
-
-    console.log(Riot);
-    console.log(Client);
 
     return { Riot, Client };
 }
@@ -126,7 +116,7 @@ function fireOPGG(names, region) {
 }
 
 function firePorofessor(names, region) {
-    const baseUrl = `https://porofessor.gg/pregame/${region}/`;
+    const baseUrl = `https://porofessor.gg/pregame/${region.toLowerCase()}/`;
     let endUrl = '';
 
     names.forEach(name => {
@@ -144,16 +134,12 @@ function firePorofessor(names, region) {
 }
 
 function showResult(names, region, website) {
-    if (!website) {
-        console.log('\nReturning list of nicknames...');
-        const stringNames = ` ${names.join(', ')}`;
-        console.log(stringNames);
-    } else {
+    if (website) {
         if (website === 'opgg') {
             console.log('Firing OPGG...');
             fireOPGG(names, region);
         } else if (website === 'porofessor') {
-            console.log('Firing Professor...');
+            console.log('Firing Porofessor...');
             firePorofessor(names, region);
         }
     }
@@ -162,79 +148,64 @@ function showResult(names, region, website) {
 async function startProgram(website) {
     console.log("Starting connection to LCU...");
     let lcuData = await getLCU();
+    
+    if (isNaN(parseInt(lcuData.Client.port)) || isNaN(parseInt(lcuData.Riot.port))) {
+        return { message: 'Something went wrong, check if client is turned on.' }
+    }
+    console.log('LCU connected!')
     console.log("Digging for some data...");
     let myregion = await makeRequest("GET", "/riotclient/region-locale", true, lcuData);
-    // const myregion = 'euw';
-    // console.log(myregion);
+    // const myregion = { region: 'euw' };
+    console.log('Region: ', myregion.region);
     let players = await makeRequest("GET", "/chat/v5/participants/champ-select", false, lcuData);
     // const players = {
     //     participants: [
     //         {
     //             activePlatform: 'riot',
-    //             cid: '35255c01-a46d-41e7-adfc-b9612cfdc487@champ-select.eu1.pvp.net',
-    //             game_name: 'WhiskeyCola',
-    //             game_tag: 'Mambo',
+    //             game_name: 'Player 1',
+    //             game_tag: 'Tag1',
     //             muted: false,
-    //             name: 'BwÖler',
-    //             pid: 'b0fe6d77-2600-54bc-a875-cbda82b2a50a@eu1.pvp.net',
-    //             puuid: 'b0fe6d77-2600-54bc-a875-cbda82b2a50a',
-    //             region: 'eu1'
+    //             name: 'OldName1'
     //         },
     //         {
     //             activePlatform: 'riot',
-    //             cid: '35255c01-a46d-41e7-adfc-b9612cfdc487@champ-select.eu1.pvp.net',
-    //             game_name: 'Kousei Arima',
-    //             game_tag: '4444',
+    //             game_name: 'Player 2',
+    //             game_tag: 'Tag2',
     //             muted: false,
-    //             name: 'ninjaforce1337',
-    //             pid: '5b53ff21-ab02-523c-a968-e4b7f11a06a6@eu1.pvp.net',
-    //             puuid: '5b53ff21-ab02-523c-a968-e4b7f11a06a6',
-    //             region: 'eu1'
+    //             name: 'OldName2'
     //         },
     //         {
     //             activePlatform: 'riot',
-    //             cid: '35255c01-a46d-41e7-adfc-b9612cfdc487@champ-select.eu1.pvp.net',
-    //             game_name: 'Τomie',
-    //             game_tag: 'EUW',
+    //             game_name: 'Player 3',
+    //             game_tag: 'Tag3',
     //             muted: false,
-    //             name: 'Τomie',
-    //             pid: '4f4801c4-7418-5598-83a1-72f5f9d9869f@eu1.pvp.net',
-    //             puuid: '4f4801c4-7418-5598-83a1-72f5f9d9869f',
-    //             region: 'eu1'
+    //             name: 'OldName3'
     //         },
     //         {
     //             activePlatform: 'riot',
-    //             cid: '35255c01-a46d-41e7-adfc-b9612cfdc487@champ-select.eu1.pvp.net',
-    //             game_name: 'NightWithTaliyah',
-    //             game_tag: 'EUW',
+    //             game_name: 'Player 4',
+    //             game_tag: 'Tag4',
     //             muted: false,
-    //             name: 'NightWithTaliyah',
-    //             pid: '729dc90c-122a-59fe-b1ab-fb8bc8c73dd1@eu1.pvp.net',
-    //             puuid: '729dc90c-122a-59fe-b1ab-fb8bc8c73dd1',
-    //             region: 'eu1'
+    //             name: 'OldName4'
     //         },
     //         {
     //             activePlatform: 'riot',
-    //             cid: '35255c01-a46d-41e7-adfc-b9612cfdc487@champ-select.eu1.pvp.net',
-    //             game_name: 'Sinfasy',
-    //             game_tag: '6969',
+    //             game_name: 'Player 5',
+    //             game_tag: 'Tag5',
     //             muted: false,
-    //             name: 'Sinfasy',
-    //             pid: '3f2b98d2-fcd7-5036-b101-83382a071324@eu1.pvp.net',
-    //             puuid: '3f2b98d2-fcd7-5036-b101-83382a071324',
-    //             region: 'eu1'
-    //         }
+    //             name: 'OldName5'
+    //         },
     //     ]
     // };
-    // console.log('players: ', players); // returns correct;
 
     const names = await getSummonerNames(players);
 
     if (website === 'justnames') {
-        return names;
+        return { message: 'done', names: names };
     }
-    showResult(names, myregion, website)
-    // console.log(names, myregion, website);
+    showResult(names, myregion.region, website);
+    
+    return { message: 'done' };
 }
 
 module.exports = startProgram;

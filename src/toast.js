@@ -5,5 +5,5 @@ function createToast(message) {
     document.querySelector('.wrapper').appendChild(toast);
     setTimeout(function() {
       document.querySelector('.wrapper').removeChild(toast);
-    }, 1000);
+    }, 2000);
   }

@@ -1,9 +1,15 @@
 document.getElementById('opgg').addEventListener('click', () => {
     window.api.send('opgg');
+    window.api.receive('invalid-port', (message) => {
+        createToast(message);
+    });
 });
   
 document.getElementById('porofessor').addEventListener('click', () => {
     window.api.send('porofessor');
+    window.api.receive('invalid-port', (message) => {
+        createToast(message);
+    });
 });
 
 document.getElementById('justnames').addEventListener('click', () => {
@@ -12,6 +18,7 @@ document.getElementById('justnames').addEventListener('click', () => {
     window.api.receive('send-names', (names) => {
 
         createToast("✔ Names received!");
+        
         // Clear names div
         const namesDiv = document.querySelector('.names');
         while (namesDiv.firstChild) {
@@ -20,11 +27,20 @@ document.getElementById('justnames').addEventListener('click', () => {
 
         // Create button with "copy all nicknames"
         const copyAll = document.createElement('div');
+        const copyAllImg = document.createElement('img');
+        const copyAllInner = document.createElement('div');
+        const copyAllInnerText = document.createElement('span');
         copyAll.classList.add('copyAll');
-        const copyAllInner = document.createElement('span');
-        copyAllInner.innerText = 'Copy all nicknames';
+
         copyAllInner.id = 'copyAll';
+
+        copyAllInnerText.innerText = 'Copy all nicknames';
+
+        copyAllImg.src = '../img/copy.png';
+
         copyAll.appendChild(copyAllInner);
+        copyAllInner.appendChild(copyAllImg);
+        copyAllInner.appendChild(copyAllInnerText);
         namesDiv.appendChild(copyAll);
 
         copyAllInner.addEventListener('click', () => {
@@ -55,5 +71,9 @@ document.getElementById('justnames').addEventListener('click', () => {
             newName.appendChild(newDiv);
             namesDiv.appendChild(newName);
         });
+    });
+
+    window.api.receive('invalid-port', (message) => {
+        createToast(message);
     });
 });
