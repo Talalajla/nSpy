@@ -14,25 +14,39 @@ Alternatively, if you prefer manual checking, you can copy the nicknames and pas
 
 ## Key Features
 
-    Pre-configured Buttons: Quickly check player profiles using pre-configured buttons for popular websites.
+* **Pre-configured Buttons:** Quickly check player profiles using pre-configured buttons for popular websites.
 
-    Manual Checking: Copy names from app and paste them on tracking websites if you prefer a manual approach.
+* **Manual Checking:** Copy names from app and paste them on tracking websites if you prefer a manual approach.
 
-    Swift Player Evaluation: Identify potential trolls and make informed decisions before starting the game.
+* **Swift Player Evaluation:** Identify potential trolls and make informed decisions before starting the game.
 
 ## Installation
 
-To start using nSpy, choose one of two installation options:
+To start using nSpy, choose one of two standard installation options:
     
-    1. Download the .zip Package with Application Files from the Releases Section
+* Download the .zip Package with Application Files from the Releases Section
 
 or
 
-    2. Get the installer from the Releases Section
+* Get the installer from the Releases Section
+
+If you have concerns or want more control, you can always access the source code and install packages using ```npm install```. Then compile the application with ```npm run dist```. This gives you the flexibility to customize the installation according to your preferences.
+ 
 
 ## Play with Confidence!
 
 Avoid unpleasant surprises and enjoy full control over your games with nSpy!
+
+## Technologies
+
+**nSpy - LoL Nickname Revealer** has been created using the following technologies and packages:
+* **Electron**: A framework for building desktop applications using HTML, CSS, and JavaScript.
+* **JavaScript**: The programming language used for implementing the application's logic.
+* **Gulp**: Package that helped minifying and mangling JavaScript code.
+
+## License
+
+This project is licensed under the MIT License. 
 
 ## Remember
 
@@ -40,5 +54,4 @@ nSpy is a tool to assist in decision-making. It's essential to be flexible and a
 
 nSpy is not affiliated with the Riot Games brand, and use is at the user's own risk.
 
-🎮🔍
-
+## See you on the Rift! 🎮🔍
